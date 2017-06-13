@@ -1,0 +1,1 @@
+# SocicaReader_Swift
