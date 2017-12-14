@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "AWS",
+        "repositoryURL": "https://github.com/nodes-vapor/aws.git",
+        "state": {
+          "branch": null,
+          "revision": "dfe34bd6e66b1b7d7bb1640221db012a36de8d21",
+          "version": "2.0.0"
+        }
+      },
+      {
         "package": "BCrypt",
         "repositoryURL": "https://github.com/vapor/bcrypt.git",
         "state": {
@@ -179,6 +188,15 @@
           "branch": null,
           "revision": "9aceb6a0d7b1698a557647493bd78b030dad468b",
           "version": "2.3.1"
+        }
+      },
+      {
+        "package": "SWXMLHash",
+        "repositoryURL": "https://github.com/drmohundro/SWXMLHash",
+        "state": {
+          "branch": null,
+          "revision": "12496b370363034ccc919e1d72a99b9970b4941e",
+          "version": "4.2.5"
         }
       },
       {

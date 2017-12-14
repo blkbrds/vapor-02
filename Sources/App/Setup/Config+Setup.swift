@@ -23,5 +23,7 @@ extension Config {
         preparations.append(Post.self)
         preparations.append(Comment.self)
         preparations.append(Favorite.self)
+        preparations.append(ResImage.self)
+        preparations.append(Image.self)
     }
 }
