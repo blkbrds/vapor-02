@@ -16,8 +16,9 @@ final class Comment: Model {
     var userId: Identifier?
     
     struct Keys {
+        static let id = "id"
         static let comment = "comment"
-        static let userId = "userId"
+        static let userId = "user_id"
     }
     
     var comment = ""
@@ -58,7 +59,7 @@ extension Comment: JSONConvertible {
     convenience init(json: JSON) throws {
         let userId: Identifier = try json.get(Keys.userId)
         guard let user = try User.find(userId) else {
-            throw Abort.badRequest
+            throw Abort.notFound
         }
         try self.init(comment: json.get(Keys.comment), user: user)
     }
@@ -66,7 +67,7 @@ extension Comment: JSONConvertible {
     
     func makeJSON() throws -> JSON {
         var json = JSON()
-        try json.set("id", id)
+        try json.set(Keys.id, id)
         try json.set(Keys.comment, comment)
         return json
     }

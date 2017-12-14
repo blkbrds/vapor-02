@@ -50,29 +50,6 @@ final class CommentController: ResourceRepresentable {
                         destroy: delete
         )
     }
-
-    // Get reminder
-    func getCommentFromUser(_ req: Request) throws -> ResponseRepresentable {
-        let comment = try req.parameters.next(Comment.self)
-        guard let user = try comment.user.get() else {
-            throw Abort.notFound
-        }
-        return user
-    }
-
-    func postComment(_ req: Request) throws -> ResponseRepresentable {
-        guard let json = req.json else {
-            throw Abort.badRequest
-        }
-        let comment = try Comment(json: json)
-        return comment
-    }
-
-    func addRoutes(to drop: Droplet) {
-        let group = drop.grouped("comments")
-        group.get(Comment.parameter, "user", handler: getCommentFromUser)
-        group.post("create", handler: postComment)
-    }
 }
 
 
