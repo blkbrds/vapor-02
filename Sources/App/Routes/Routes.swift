@@ -19,8 +19,12 @@ extension Droplet {
         }
 
         get("description") { req in return req.description }
-        
         try resource("posts", PostController.self)
         try resource("comments", CommentController.self)
+        // Resonse for group
+        let userController = UserController()
+        userController.addRoutes(to: self)
+        let commentController = CommentController()
+        commentController.addRoutes(to: self)
     }
 }
