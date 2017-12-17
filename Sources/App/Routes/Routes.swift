@@ -22,5 +22,8 @@ extension Droplet {
         
         try resource("posts", PostController.self)
         try resource("comments", CommentController.self)
+        try resource("favorites", FavoriteController.self)
+        try resource("resimages", ResImageController.self)
+        try resource("images", ImageController.self)
     }
 }
