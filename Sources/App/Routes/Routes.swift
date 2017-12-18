@@ -25,5 +25,6 @@ extension Droplet {
         try resource("favorites", FavoriteController.self)
         try resource("resimages", ResImageController.self)
         try resource("images", ImageController.self)
+        try resource("notifications", NotificationController.self)
     }
 }
