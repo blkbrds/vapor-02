@@ -10,6 +10,10 @@ final class PostController: ResourceRepresentable {
         return try Post.all().makeJSON()
     }
 
+    func index2(_ req: Request) throws -> ResponseRepresentable {
+        return try Post.all().makeJSON()
+    }
+
     /// When consumers call 'POST' on '/posts' with valid JSON
     /// construct and save the post
     func store(_ req: Request) throws -> ResponseRepresentable {
