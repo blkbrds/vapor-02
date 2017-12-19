@@ -52,7 +52,6 @@ final class CommentController: ResourceRepresentable {
     }
 }
 
-
 extension Request {
     func comment() throws -> Comment {
         guard let json = json else { throw Abort.badRequest }
