@@ -29,6 +29,7 @@ extension Droplet {
         try resource("favorites", FavoriteController.self)
         try resource("resimages", ResImageController.self)
         try resource("images", ImageController.self)
+        try resource("restaurants", RestaurantController.self)
 
         let userGroup = grouped(Keys.users)
         userGroup.post(Keys.create, handler: createUser) //http://localhost:8080/users/create

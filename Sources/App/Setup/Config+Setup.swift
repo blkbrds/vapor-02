@@ -26,5 +26,6 @@ extension Config {
         preparations.append(Favorite.self)
         preparations.append(ResImage.self)
         preparations.append(Image.self)
+        preparations.append(Restaurant.self)
     }
 }
