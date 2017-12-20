@@ -31,6 +31,8 @@ extension Droplet {
         try v1.resource("favorites", FavoriteController.self)
         try resource("comments", CommentController.self)
         try resource("resimages", ResImageController.self)
+        try resource("images", ImageController.self)
+        try resource("restaurants", RestaurantController.self)
         try resource("notifications", NotificationController.self)
 
         let userGroup = grouped(Keys.users)
