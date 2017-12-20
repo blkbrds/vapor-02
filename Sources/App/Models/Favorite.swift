@@ -18,6 +18,10 @@ final class Favorite: Model {
     
     var name = ""
     
+    init(name: String) {
+        self.name = name
+    }
+    
     func makeRow() throws -> Row {
         var row = Row()
         try row.set(Keys.name, name)
@@ -53,7 +57,10 @@ extension Favorite: JSONConvertible {
     }
     
     convenience init(json: JSON) throws {
-        self.init()
+        self.init(
+            name: try json.get(Keys.name
+            )
+        )
     }
 }
 
