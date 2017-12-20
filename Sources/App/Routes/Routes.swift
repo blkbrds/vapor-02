@@ -25,11 +25,15 @@ extension Droplet {
             return req.description
         }
         
+        let v1 = grouped("v1")
+        try v1.collection(ImageRouteCollection())
+        try v1.resource("images", ImageController.self)
+        try v1.resource("favorites", FavoriteController.self)
         try resource("comments", CommentController.self)
-        try resource("favorites", FavoriteController.self)
         try resource("resimages", ResImageController.self)
         try resource("images", ImageController.self)
         try resource("restaurants", RestaurantController.self)
+        try resource("notifications", NotificationController.self)
 
         let userGroup = grouped(Keys.users)
         userGroup.post(Keys.create, handler: createUser) //http://localhost:8080/users/create
