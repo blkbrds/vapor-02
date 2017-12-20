@@ -8,6 +8,7 @@
 import Vapor
 import FluentProvider
 import HTTP
+import AuthProvider
 
 final class User: Model {
 
@@ -16,31 +17,26 @@ final class User: Model {
     struct Keys {
         static let id = "id"
         static let name = "name"
-        static let description = "description"
-        static let website = "website"
+        static let email = "email"
     }
 
     var name: String
-    var description: String
-    var website: String
+    var email: String
 
-    init(name: String, description: String, website: String) {
+    init(name: String, email: String) {
         self.name = name
-        self.description = description
-        self.website = website
+        self.email = email
     }
 
     init(row: Row) throws {
         name = try row.get(Keys.name)
-        description = try row.get(Keys.description)
-        website = try row.get(Keys.website)
+        email = try row.get(Keys.email)
     }
 
     func makeRow() throws -> Row {
         var row = Row()
         try row.set(Keys.name, name)
-        try row.set(Keys.description, description)
-        try row.set(Keys.website, website)
+        try row.set(Keys.email, email)
         return row
     }
 }
@@ -50,8 +46,7 @@ extension User: Preparation {
         try database.create(self, closure: { builder in
             builder.id()
             builder.string(Keys.name)
-            builder.string(Keys.description)
-            builder.string(Keys.website)
+            builder.string(Keys.email)
         })
     }
 
@@ -64,16 +59,14 @@ extension User: JSONConvertible {
     func makeJSON() throws -> JSON {
         var json = JSON()
         try json.set(Keys.name, name)
-        try json.set(Keys.description, description)
-        try json.set(Keys.website, website)
+        try json.set(Keys.email, email)
         return json
     }
 
     convenience init(json: JSON) throws {
         self.init(
             name: try json.get(Keys.name),
-            description: try json.get(Keys.description),
-            website: try json.get(Keys.website)
+            email: try json.get(Keys.email)
         )
     }
 }
@@ -85,3 +78,8 @@ extension User {
 }
 
 extension User: ResponseRepresentable {}
+
+extension User: TokenAuthenticatable {
+    typealias TokenType = Session
+    static let tokenKey = Session.Keys.accessToken
+}

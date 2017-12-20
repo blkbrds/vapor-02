@@ -21,7 +21,7 @@
       },
       {
         "package": "AuthProvider",
-        "repositoryURL": "https://github.com/vapor/auth-provider",
+        "repositoryURL": "https://github.com/vapor/auth-provider.git",
         "state": {
           "branch": null,
           "revision": "c8a89d5f32873a7ec6037e2c78a192526c496618",
