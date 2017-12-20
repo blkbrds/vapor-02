@@ -87,8 +87,8 @@ extension Restaurant: Preparation {
             builder.id()
             builder.string(Keys.name)
             builder.string(Keys.address)
-            builder.string(Keys.lat)
-            builder.string(Keys.lng)
+            builder.float(Keys.lat)
+            builder.float(Keys.lng)
             builder.foreignId(for: User.self)
         }
     }
