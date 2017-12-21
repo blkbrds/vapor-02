@@ -1,4 +1,5 @@
 import Vapor
+import AuthProvider
 
 extension Droplet {
 
@@ -34,6 +35,8 @@ extension Droplet {
         try resource("images", ImageController.self)
         try resource("restaurants", RestaurantController.self)
         try resource("notifications", NotificationController.self)
+        
+        authRoutes(drop: self)
 
         let userGroup = grouped(Keys.users)
         userGroup.post(Keys.create, handler: createUser) //http://localhost:8080/users/create
@@ -91,5 +94,13 @@ extension Droplet {
             throw Abort.notFound
         }
         return user
+    }
+}
+
+extension RouteBuilder {
+
+    func authRoutes(drop: Droplet) {
+        post("register", handler: AuthController(drop: drop).register)
+        post("login", handler: AuthController(drop: drop).login)
     }
 }
