@@ -14,4 +14,8 @@ extension Request {
         guard let node = data["page"], let page = node.wrapped.int, page > 0 else { return 1 }
         return page
     }
+
+    func user() throws -> User {
+        return try auth.assertAuthenticated()
+    }
 }

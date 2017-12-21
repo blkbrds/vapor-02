@@ -75,6 +75,10 @@ extension User {
     var comments: Children<User, Comment> {
         return children()
     }
+
+    var auths: Children<User, Auth> {
+        return children(foreignIdKey: Auth.Keys.userId)
+    }
 }
 
 extension User: ResponseRepresentable {}
