@@ -37,9 +37,8 @@ extension Droplet {
         try resource("notifications", NotificationController.self)
         
         authRoutes(drop: self)
-
-        let v2 = grouped("v2")
-        try v2.collection(RestaurantRouteCollection())
+        
+        try v1.collection(RestaurantRouteCollection())
 
         let userGroup = grouped(Keys.users)
         userGroup.post(Keys.create, handler: createUser) //http://localhost:8080/users/create
