@@ -17,6 +17,7 @@ extension Config {
         try addProvider(FluentProvider.Provider.self)
         try addProvider(MySQLProvider.Provider.self)
         try addProvider(AuthProvider.Provider.self)
+        addConfigurable(middleware: ApiMiddleware(), name: "api-middleware")
     }
     
     /// Add all models that should have their
