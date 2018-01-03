@@ -13,31 +13,35 @@ import HTTP
 final class Comment: Model {
     
     let storage = Storage()
-    var userId: Identifier?
+    var comment = ""
+    var userId: Identifier
+    var restaurantId: Identifier
     
     struct Keys {
         static let id = "id"
         static let comment = "comment"
         static let userId = "user_id"
+        static let restaurantId = "restaurant_id"
     }
-    
-    var comment = ""
-    
-    init(comment: String, user: User) {
+
+    init(comment: String, user: User, restaurant: Restaurant) throws {
         self.comment = comment
-        self.userId = user.id
+        userId = try user.assertExists()
+        restaurantId = try restaurant.assertExists()
     }
     
     func makeRow() throws -> Row {
         var row = Row()
         try row.set(Keys.comment, comment)
-        try row.set(User.foreignIdKey, userId)
+        try row.set(Keys.userId, userId)
+        try row.set(Keys.restaurantId, restaurantId)
         return row
     }
     
     init(row: Row) throws {
         comment = try row.get(Keys.comment)
-        userId = try row.get(User.foreignIdKey)
+        userId = try row.get(Keys.userId)
+        restaurantId = try row.get(Keys.restaurantId)
     }
 }
 
@@ -46,7 +50,8 @@ extension Comment: Preparation {
         try database.create(self, closure: { builder in
             builder.id()
             builder.string(Keys.comment)
-            builder.parent(User.self)
+            builder.parent(User.self, optional: false, foreignIdKey: Keys.userId)
+            builder.parent(Restaurant.self, optional: true, foreignIdKey: Keys.restaurantId)
         })
     }
     
@@ -55,16 +60,17 @@ extension Comment: Preparation {
     }
 }
 
-extension Comment: JSONConvertible {
+extension Comment: JSONRepresentable {
     convenience init(json: JSON) throws {
         let userId: Identifier = try json.get(Keys.userId)
-        guard let user = try User.find(userId) else {
+        let restaurantId: Identifier = try json.get(Keys.restaurantId)
+        guard let user = try User.find(userId),
+            let restaurant = try Restaurant.find(restaurantId) else {
             throw Abort.notFound
         }
-        try self.init(comment: json.get(Keys.comment), user: user)
+        try self.init(comment: json.get(Keys.comment), user: user, restaurant: restaurant)
     }
-    
-    
+
     func makeJSON() throws -> JSON {
         var json = JSON()
         try json.set(Keys.id, id)
@@ -80,8 +86,13 @@ extension Comment: JSONConvertible {
 }
 
 extension Comment {
+
     var user: Parent<Comment, User> {
         return parent(id: userId)
+    }
+
+    var restaurant: Parent<Comment, Restaurant> {
+        return parent(id: restaurantId)
     }
 }
 
