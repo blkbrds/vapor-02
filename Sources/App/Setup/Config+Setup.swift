@@ -31,7 +31,6 @@ extension Config {
         preparations.append(Image.self)
         preparations.append(Restaurant.self)
         preparations.append(Notification.self)
-        preparations.append(AuthMethod.self)
         preparations.append(Auth.self)
         preparations.append(Session.self)
     }
