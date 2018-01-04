@@ -50,8 +50,8 @@ extension Comment: Preparation {
         try database.create(self, closure: { builder in
             builder.id()
             builder.string(Keys.comment)
-            builder.parent(User.self, optional: false, foreignIdKey: Keys.userId)
-            builder.parent(Restaurant.self, optional: true, foreignIdKey: Keys.restaurantId)
+            builder.parent(User.self, optional: false)
+            builder.parent(Restaurant.self, optional: false)
         })
     }
     
