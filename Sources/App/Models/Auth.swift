@@ -15,41 +15,34 @@ final class Auth: Model {
     let storage = Storage()
 
     // Email or username
-    var authId: String
-    var authToken: String
+    var username: String
+    var password: String
 
     var userId: Identifier
-    var authMethodId: Identifier
 
     struct Keys {
-        static let authId = "authId"
-        static let authToken = "authToken"
-        static let userId = "userId"
-        static let authMethodId = "authMethodId"
-        static let user = "user"
-        static let authMethod = "authMethod"
+        static let authUsername = "username"
+        static let authPassword = "password"
+        static let userId = "user_id"
     }
 
-    init(authId: String, authToken: String, user: User, authMethod: AuthMethod) throws {
-        authMethodId = try authMethod.assertExists()
+    init(username: String, password: String, user: User) throws {
         self.userId = try user.assertExists()
-        self.authId = authId
-        self.authToken = authToken
+        self.username = username
+        self.password = password
     }
 
     init(row: Row) throws {
-        authId = try row.get(Keys.authId)
-        authToken = try row.get(Keys.authToken)
+        username = try row.get(Keys.authUsername)
+        password = try row.get(Keys.authPassword)
         userId = try row.get(Keys.userId)
-        authMethodId = try row.get(Keys.authMethodId)
     }
 
     // Serializes
     func makeRow() throws -> Row {
         var row = Row()
-        try row.set(Keys.authId, authId)
-        try row.set(Keys.authToken, authToken)
-        try row.set(Keys.authMethodId, authMethodId)
+        try row.set(Keys.authUsername, username)
+        try row.set(Keys.authPassword, password)
         try row.set(Keys.userId, userId)
         return row
     }
@@ -60,9 +53,8 @@ extension Auth: Preparation {
     static func prepare(_ database: Database) throws {
         try database.create(self) { builder in
             builder.id()
-            builder.string(Keys.authId, length: 255)
-            builder.string(Keys.authToken, length: 255)
-            builder.parent(AuthMethod.self, optional: false, foreignIdKey: Keys.authMethodId)
+            builder.string(Keys.authUsername, length: 255)
+            builder.string(Keys.authPassword, length: 255)
             builder.parent(User.self, optional: false, foreignIdKey: Keys.userId)
         }
     }
@@ -77,9 +69,8 @@ extension Auth: JSONRepresentable {
 
     func makeJSON() throws -> JSON {
         var json = JSON()
-        try json.set(Keys.authId, authId)
-        try json.set(Keys.user, user.get())
-        try json.set(Keys.authMethod, authMethod.get())
+        try json.set(Keys.authUsername, username)
+        try json.set("user", user.get())
         return json
     }
 }
@@ -90,10 +81,6 @@ extension Auth: ResponseRepresentable { }
 extension Auth {
     var user: Parent<Auth, User> {
         return parent(id: userId)
-    }
-
-    var authMethod: Parent<Auth, AuthMethod> {
-        return parent(id: authMethodId)
     }
 }
 

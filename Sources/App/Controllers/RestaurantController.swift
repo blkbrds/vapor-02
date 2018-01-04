@@ -19,8 +19,6 @@ final class RestaurantController: ResourceRepresentable {
 
     func create(req: Request) throws -> ResponseRepresentable {
         let user = try req.user()
-        guard (try user.auths.first()?.authId) != nil else { throw Abort.notFound }
-
         try req.json?.set(Restaurant.Keys.userId, user.id)
         let res = try req.res()
         try res.save()

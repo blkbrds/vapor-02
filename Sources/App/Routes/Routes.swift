@@ -27,20 +27,20 @@ extension Droplet {
         }
         
         let v1 = grouped("v1")
-        try v1.collection(ImageRouteCollection())
-        try v1.resource("images", ImageController.self)
-        try v1.resource("favorites", FavoriteController.self)
-        try resource("comments", CommentController.self)
-        try resource("resimages", ResImageController.self)
-        try resource("images", ImageController.self)
-        try resource("restaurants", RestaurantController.self)
-        try resource("notifications", NotificationController.self)
+        try v1.collection(AuthRouteCollection())
+        let authGroup = v1.grouped(TokenAuthenticationMiddleware(User.self))
+        try authGroup.collection(ImageRouteCollection())
+        try authGroup.resource("images", ImageController.self)
+        try authGroup.resource("favorites", FavoriteController.self)
+        try authGroup.resource("comments", CommentController.self)
+        try authGroup.resource("resimages", ResImageController.self)
+        try authGroup.resource("images", ImageController.self)
+        try authGroup.resource("restaurants", RestaurantController.self)
+        try authGroup.resource("notifications", NotificationController.self)
         
-        authRoutes(drop: self)
-        
-        try v1.collection(RestaurantRouteCollection())
+        try authGroup.collection(RestaurantRouteCollection())
 
-        let userGroup = grouped(Keys.users)
+        let userGroup = authGroup.grouped(Keys.users)
         userGroup.post(Keys.create, handler: createUser) //http://localhost:8080/users/create
         userGroup.get(User.parameter, handler: getUser) //http://localhost:8080/users/1
         userGroup.get(User.parameter, Keys.comments, handler: getUserComments) //http://localhost:8080/users/1/commments
@@ -96,13 +96,5 @@ extension Droplet {
             throw Abort.notFound
         }
         return user
-    }
-}
-
-extension RouteBuilder {
-
-    func authRoutes(drop: Droplet) {
-        post("register", handler: AuthController(drop: drop).register)
-        post("login", handler: AuthController(drop: drop).login)
     }
 }

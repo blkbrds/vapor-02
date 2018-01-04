@@ -94,6 +94,9 @@ extension Session {
     /// Generates a new token for the supplied User.
     static func generate(for user: User) throws -> Session {
         // generate 128 random bits using OpenSSL
+        if let userId = user.id, let oldSession = try Session.makeQuery().filter(Session.Keys.userId, userId).first() {
+            try oldSession.delete()
+        }
         let random = try Crypto.Random.bytes(count: 32)
 
         // create and return the new token

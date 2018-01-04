@@ -17,6 +17,7 @@ extension Config {
         try addProvider(FluentProvider.Provider.self)
         try addProvider(MySQLProvider.Provider.self)
         try addProvider(AuthProvider.Provider.self)
+        addConfigurable(middleware: ApiMiddleware(), name: "api-middleware")
     }
     
     /// Add all models that should have their
@@ -30,7 +31,6 @@ extension Config {
         preparations.append(ResImage.self)
         preparations.append(Image.self)
         preparations.append(Notification.self)
-        preparations.append(AuthMethod.self)
         preparations.append(Auth.self)
         preparations.append(Session.self)
     }
