@@ -18,25 +18,30 @@ final class User: Model {
         static let id = "id"
         static let name = "name"
         static let email = "email"
+        static let avatar = "image"
     }
 
     var name: String
     var email: String
+    var avatar: String?
 
-    init(name: String, email: String) {
+    init(name: String, email: String, avatar: String?) {
         self.name = name
         self.email = email
+        self.avatar = avatar
     }
 
     init(row: Row) throws {
         name = try row.get(Keys.name)
         email = try row.get(Keys.email)
+        avatar = try row.get(Keys.avatar)
     }
 
     func makeRow() throws -> Row {
         var row = Row()
         try row.set(Keys.name, name)
         try row.set(Keys.email, email)
+        try row.set(Keys.avatar, avatar)
         return row
     }
 }
@@ -47,6 +52,7 @@ extension User: Preparation {
             builder.id()
             builder.string(Keys.name)
             builder.string(Keys.email)
+            builder.string(Keys.avatar)
         })
     }
 
@@ -60,13 +66,15 @@ extension User: JSONConvertible {
         var json = JSON()
         try json.set(Keys.name, name)
         try json.set(Keys.email, email)
+        try json.set(Keys.avatar, avatar)
         return json
     }
 
     convenience init(json: JSON) throws {
         self.init(
             name: try json.get(Keys.name),
-            email: try json.get(Keys.email)
+            email: try json.get(Keys.email),
+            avatar: try json.get(Keys.avatar)
         )
     }
 }
