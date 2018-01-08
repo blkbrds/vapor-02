@@ -20,8 +20,8 @@ final class Comment: Model {
     struct Keys {
         static let id = "id"
         static let comment = "comment"
-        static let userId = "user_id"
-        static let restaurantId = "restaurant_id"
+        static let userId = "userId"
+        static let restaurantId = "restaurantId"
     }
 
     init(comment: String, user: User, restaurant: Restaurant) throws {

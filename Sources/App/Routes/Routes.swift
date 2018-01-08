@@ -38,7 +38,7 @@ extension Droplet {
         try authGroup.resource("restaurants", RestaurantController.self)
         try authGroup.resource("notifications", NotificationController.self)
         try authGroup.collection(DeviceTokenRouteCollection())
-        
+        try authGroup.collection(UserRouteCollection())
         try authGroup.collection(RestaurantRouteCollection())
 
         let userGroup = authGroup.grouped(Keys.users)

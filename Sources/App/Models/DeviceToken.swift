@@ -28,6 +28,7 @@ final class DeviceToken: Model {
     func makeRow() throws -> Row {
         var row = Row()
         try row.set(Keys.deviceToken, deviceToken)
+        try row.set(Keys.userId, userId)
         return row
     }
     

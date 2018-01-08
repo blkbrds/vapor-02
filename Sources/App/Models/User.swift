@@ -52,7 +52,7 @@ extension User: Preparation {
             builder.id()
             builder.string(Keys.name)
             builder.string(Keys.email)
-            builder.string(Keys.avatar)
+            builder.string(Keys.avatar, optional: true)
         })
     }
 

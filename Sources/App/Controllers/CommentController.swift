@@ -84,8 +84,10 @@ extension NotificationController {
                 tokens.append(token.deviceToken)
             }
         }
-        apns.send(message, to: tokens, perDeviceResultHandler: { (result) in
-        })
+        if !tokens.isEmpty {
+            apns.send(message, to: tokens, perDeviceResultHandler: { (result) in
+            })
+        }
     }
 }
 
