@@ -28,7 +28,7 @@ class AuthRouteCollection: RouteCollection {
                 let error = ResponseError(key: "Register Invalid", value: "Username is Exist")
                 throw Abort(status: .badRequest, errors: [error])
             }
-            let user = User(name: param.name, email: param.email)
+            let user = User(name: param.name, email: param.email, avatar: param.avatar)
             try user.save()
             let auth = try Auth(username: param.username, password: param.password, user: user)
             try auth.save()
@@ -63,11 +63,13 @@ extension AuthRouteCollection {
         var password: String
         var name: String
         var email: String
-        init(username: String, password: String, name: String, email: String) {
+        var avatar: String?
+        init(username: String, password: String, name: String, email: String, avatar: String?) {
             self.username = username
             self.password = password
             self.name = name
             self.email = email
+            self.avatar = avatar
         }
     }
     
@@ -79,6 +81,7 @@ extension AuthRouteCollection {
                 let error = ResponseError(key: "Register Validation", value: "Parameter Invalid")
                 return .failure([error])
         }
+        let avatar = json?["image"]?.string
         var errors: [ResponseError] = []
         if username.isEmpty {
             let error = ResponseError(key: "Register Validation", value: "Username Must not Empty")
@@ -100,7 +103,7 @@ extension AuthRouteCollection {
             errors.append(error)
         }
         if errors.isEmpty {
-            return .success(RegisterParam(username: username, password: password, name: name, email: email))
+            return .success(RegisterParam(username: username, password: password, name: name, email: email, avatar: avatar))
         }
         return .failure(errors)
     }

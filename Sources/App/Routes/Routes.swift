@@ -28,15 +28,16 @@ extension Droplet {
         
         let v1 = grouped("v1")
         try v1.collection(AuthRouteCollection())
+        try v1.collection(ImageRouteCollection())
         let authGroup = v1.grouped(TokenAuthenticationMiddleware(User.self))
-        try authGroup.collection(ImageRouteCollection())
-        try authGroup.resource("images", ImageController.self)
+        try v1.resource("images", ImageController.self)
         try authGroup.resource("favorites", FavoriteController.self)
         try authGroup.resource("comments", CommentController.self)
         try authGroup.resource("resimages", ResImageController.self)
         try authGroup.resource("images", ImageController.self)
         try authGroup.resource("restaurants", RestaurantController.self)
         try authGroup.resource("notifications", NotificationController.self)
+        try authGroup.collection(DeviceTokenRouteCollection())
         
         try authGroup.collection(RestaurantRouteCollection())
 

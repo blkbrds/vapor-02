@@ -33,5 +33,6 @@ extension Config {
         preparations.append(Notification.self)
         preparations.append(Auth.self)
         preparations.append(Session.self)
+        preparations.append(DeviceToken.self)
     }
 }

@@ -24,14 +24,14 @@ class ImageRouteCollection: RouteCollection {
     private func upload(_ req: Request) throws -> ResponseRepresentable {
         let image = try req.imageUpload()
         try image.save()
-        return try Response(status: .ok, json: ["message": "Successful"])
+        return try image.makeJSON()
     }
 }
 
 extension Request {
     func imageUpload() throws -> Image {
-        guard let bytes = json?["image"]?.bytes,
-            let fileName = json?["named"]?.string else { throw Abort.notFound }
+        guard let form = formData, let bytes = form["image"]?.part.body,
+            let fileName = form["named"]?.string else { throw Abort.notFound }
         let url = try S3.upload(folderName: "media", fileName: fileName, bytes: bytes)
         return Image(url: url)
     }
